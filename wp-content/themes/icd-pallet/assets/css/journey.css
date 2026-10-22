@@ -1,0 +1,50 @@
+/* Hành trình 1 pallet - 4 chặng. Mặc định (di động, không JS): thẻ xếp dọc, mỗi thẻ có ảnh riêng.
+   Màn >= 1024px có JS: ảnh dính bên trái đổi theo chặng đang đọc, chữ cuộn bên phải.
+   Ảnh luôn hiện trọn tỉ lệ gốc (không cắt), nền xám thép lấp khoảng trống. */
+.jr { overflow: visible !important; padding: 88px 0 80px; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.jr .section-lede { margin-bottom: 36px; }
+.jr__grid { position: relative; }
+.jr__stage { display: none; }
+.jr__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 40px; }
+.jr__step { display: grid; gap: 18px; }
+.jr__fig { margin: 0; background: var(--paper-art, #EDEFF2); border: 1px solid var(--line); }
+.jr__fig img { display: block; width: auto; max-width: 100%; height: auto; max-height: 72vh; margin: 0 auto; }
+.jr__fig figcaption, .jr__slide figcaption { padding: 10px 14px 12px; border-top: 1px solid var(--line); background: #fff; font-size: 15px; color: var(--muted); }
+.jr__fig .fig, .jr__slide .fig { font-weight: 700; color: var(--steel, #2A3140); margin-right: 6px; }
+.jr__no { display: inline-block; font: 700 15px/1 var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--orange-ink, #A85500); padding-bottom: 8px; border-bottom: 3px solid var(--orange, #F68B1D); margin-bottom: 14px; }
+.jr__body h3 { font: 700 clamp(22px, 2vw, 28px)/1.2 var(--display); color: #14203F; margin: 0 0 10px; }
+.jr__body p { margin: 0 0 20px; color: var(--ink); max-width: 62ch; }
+.jr__figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 0; margin: 0; border-top: 1px solid var(--line); }
+.jr__figs > div { display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; padding: 14px 16px 14px 0; border-bottom: 1px solid var(--line); }
+.jr__figs .jr__v { display: block; margin: 0; font: 700 clamp(26px, 2.4vw, 34px)/1.05 var(--display); color: #14203F; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.jr__figs .jr__l { font-size: 15px; color: var(--muted); line-height: 1.35; }
+.jr__note { margin: 32px 0 0; font-size: 15px; color: var(--muted); max-width: 920px; }
+.jr__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+
+@media (min-width: 1024px) {
+  .jr.is-js .jr__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; align-items: start; }
+  .jr.is-js .jr__stage { display: block; position: sticky; top: 96px; height: min(calc(100vh - 140px), 680px); background: var(--paper-art, #EDEFF2); border: 1px solid var(--line); overflow: hidden; }
+  .jr.is-js .jr__fig { display: none; }
+  .jr.is-js .jr__list { gap: 0; }
+  .jr.is-js .jr__step { min-height: 58vh; align-content: center; padding: 32px 0 32px 28px; border-left: 2px solid var(--line); transition: border-color .3s ease; }
+  .jr.is-js .jr__step.is-on { border-left-color: var(--orange, #F68B1D); }
+  .jr.is-js .jr__step:not(.is-on) .jr__no { color: var(--muted); border-bottom-color: var(--line); }
+  .jr__slide { position: absolute; inset: 0 0 6px; display: flex; flex-direction: column; margin: 0; opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .6s cubic-bezier(.2, .8, .2, 1); }
+  .jr__slide.is-on { opacity: 1; transform: none; }
+  .jr__slide > span { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .jr__slide img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; }
+  .jr__rail { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; background: #fff; }
+  .jr__rail i { display: block; background: var(--line-soft, #D8DCE3); position: relative; overflow: hidden; }
+  .jr__rail i b { position: absolute; inset: 0; background: var(--orange, #F68B1D); transform: scaleX(0); transform-origin: left; transition: transform .4s ease; }
+  .jr__rail i.is-done b { transform: none; }
+}
+@media (max-width: 720px) {
+  .jr { padding: 64px 0 56px; }
+  .jr__list { gap: 32px; }
+  .jr__fig img { max-height: 64vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jr__slide, .jr__rail i b, .jr.is-js .jr__step { transition: none; }
+  .jr__slide { transform: none; }
+}
+@media print { .jr__stage { display: none !important; } .jr__fig { display: block !important; } }
